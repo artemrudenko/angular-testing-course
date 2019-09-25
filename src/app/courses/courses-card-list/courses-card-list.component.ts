@@ -1,15 +1,17 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {Course} from '../model/course';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import {CourseDialogComponent} from '../course-dialog/course-dialog.component';
-import {filter, tap} from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
+
+import { CourseDialogComponent } from '../course-dialog/course-dialog.component';
+import { Course } from '../model/course';
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'courses-card-list',
   templateUrl: './courses-card-list.component.html',
   styleUrls: ['./courses-card-list.component.css']
 })
-export class CoursesCardListComponent implements OnInit {
+export class CoursesCardListComponent {
 
   @Input()
   courses: Course[];
@@ -17,25 +19,17 @@ export class CoursesCardListComponent implements OnInit {
   @Output()
   courseEdited = new EventEmitter();
 
-  constructor(private dialog: MatDialog) {
-
-  }
-
-  ngOnInit() {
-
-  }
+  constructor(
+    private dialog: MatDialog) { }
 
   editCourse(course: Course) {
 
     const dialogConfig = new MatDialogConfig();
-
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-
     dialogConfig.data = course;
 
     const dialogRef = this.dialog.open(CourseDialogComponent, dialogConfig);
-
 
     dialogRef.afterClosed()
       .pipe(
@@ -43,16 +37,6 @@ export class CoursesCardListComponent implements OnInit {
         tap(() => this.courseEdited.emit())
       )
       .subscribe();
-
   }
 
 }
-
-
-
-
-
-
-
-
-
